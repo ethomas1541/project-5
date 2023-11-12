@@ -1,51 +1,30 @@
-# UOCIS322 - Project 5 #
-Brevet time calculator with MongoDB!
+Elijah Thomas ethomas7@uoregon.edu
 
-## Overview
+CS 322 Project 5
 
-You'll add a storage to your previous project using MongoDB and `docker-compose`.
-As we discussed, `docker-compose` makes it easier to create, manage and connect multiple container to create a single service comprised of different sub-services.
+From Project 4:
 
-Presently, there's only a placeholder directory for your Flask app, and a `docker-compose` configuration file. You will copy over `brevets/` from your completed project 4, add a MongoDB service to docker-compose and your Flask app. You will also add two buttons named `Submit` and `Display` to the webpage. `Submit` must store the information (brevet distance, start time, checkpoints and their opening and closing times) in the database (overwriting existing ones). `Display` will fetch the information from the database and fill in the form with them.
+	Calculator for ACP Brevet open and close times based on:
 
-Recommended: Review [MongoDB README](MONGODB.md) and[Docker Compose README](COMPOSE.md).
+		https://rusa.org/pages/acp-brevet-control-times-calculator
 
-## Tasks
+	Provides quick, refresh-less updates for each row in a table based on user input. The last 3 columns of the chart
+	are extrapolated from user input. Requests are handled with AJAX and sent to a rudimentary Flask-based server.
 
-1. Add two buttons `Submit` and `Display` in the ACP calculator page.
+	-	Frontend: 					brevets/templates/calc.html
+	-	Web server: 				brevets/flask_brevets.py
+	-	Backend:					brevets/acp_times.py
 
-	- Upon clicking the `Submit` button, the control times should be inserted into a MongoDB database, and the form should be cleared (reset) **without** refreshing the page.
+	Comments in each of these files provide much further detail.
 
-	- Upon clicking the `Display` button, the entries from the database should be filled into the existing page.
+New in Project 5:
 
-	- Handle error cases appropriately. For example, Submit should return an error if no control times are input. One can imagine many such cases: you'll come up with as many cases as possible.
+	- MongoDB container, running in parallel, on port 27017
+	- Two new AJAX requests present in the frontend and backend files from above
+	- In essence, frontend has a sort of indirect, full-duplex communication system with a MongoDB database that stores its form data in a dictionary-like structure
 
-2. An automated `nose` test suite with at least 2 test cases: at least one for for DB insertion and one for retrieval.
+	- Issues with "overflows" in my project 4 implementation have been solved, and unit tests have been updated, though they are not present in this repository
 
-3. Update README.md with brevet control time calculation rules (you were supposed to do this for Project 4), and additional information regarding this project.
-	- This project will be peer-reviewed, so be thorough.
+	- brevets/tests now contains a single Python file, test_db.py, that requires a running instance of MongoDB on port 27017, and passes all tests to the best of my knowledge. Granted, the tests are fairly pedestrian and demonstrate basic functionality
 
-## Grading Rubric
-
-* If your code works as expected: 100 points. This includes:
-	* Front-end implementation (`Submit` and `Display`).
-	
-	* Back-end implementation (Connecting to MongoDB, insertion and selection).
-	
-	* AJAX interaction between the frontend and backend (AJAX for `Submit` and `Display`).
-	
-	* Updating `README` with a clear specification (including details from Project 4).
-	
-	* Handling errors correctly.
-	
-	* Writing at least 2 correct tests using nose (put them in `tests`, follow Project 3 if necessary), and all should pass.
-
-* If DB operations do not work as expected (either submit fails to store information, or display fails to retrieve and show information correctly), 60 points will be docked.
-
-* If database-related tests are not found in `brevets/tests/`, or are incomplete, or do not pass, 20 points will be docked.
-
-* If docker does not build/run correctly, or the yaml file is not updated correctly, 5 will be assigned assuming README is updated.
-
-## Authors
-
-Michal Young, Ram Durairajan. Updated by Ali Hassani.
+	- pymongo added to requirements.txt (obviously)
