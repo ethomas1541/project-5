@@ -4,13 +4,14 @@ Nose tests for the new database functionalities of flask_brevets.py
 Write your tests HERE AND ONLY HERE.
 """
 
+
 import nose
 import logging
 from pymongo import MongoClient
 
 # This seems to work on Windows and Linux, and assumes that MongoDB is running on Port 27017.
 # $(sudo docker run -d -p 27017:27017 mongo:5.0.5) works perfectly for me.
-client = MongoClient('localhost:27017')
+client = MongoClient('mongodb://mongo', 27017)
 
 db = client.mydb
 
