@@ -162,6 +162,9 @@
                      post_obj["closet" + is] = $(closes[i]).val();
                   }
 
+                  post_obj["brevdist"] = $('#brevet_dist_km').val();
+                  post_obj["start_date"] = $('#begin_date').val();
+
                   // HTTP POST it to the server
                   $.post(SCRIPT_ROOT + "/_submit_times", post_obj).done(
                      function(){
@@ -174,6 +177,9 @@
                            $(opens[i]).val("mm/dd/yyyy --:-- --");
                            $(closes[i]).val("mm/dd/yyyy --:-- --");
                         }
+
+                        $('#brevet_dist_km').val("200");
+                        $('#begin_date').val("2021-01-01T00:00");   
 
                         // Status code
                         $("#db_status").text("Data saved! Press Display to retrieve");
@@ -214,7 +220,7 @@
                         var response_json = JSON.parse(data.result)
 
                         // Overwrite any ephemeral form data with the database data
-                        for(let i = 0; i < miles.length; i++){
+                        for(let i = 0; i < 20; i++){
                            var response_i = response_json[i]
                            $(miles[i]).val(response_i.miles);
                            $(kms[i]).val(response_i.kilometers);
@@ -222,6 +228,9 @@
                            $(opens[i]).val(response_i.open);
                            $(closes[i]).val(response_i.close);
                         }
+
+                        $('#brevet_dist_km').val(response_json[20].brev_length);
+                        $('#begin_date').val(response_json[20].start_date);                        
 
                         // $("#db_status").text(response_json[0].miles)
 
@@ -259,7 +268,7 @@
                      close_time_field.css("color", "red");
                      notes_field.css("color", "red");
 
-                     // Code 1: Distance is negative or exceeds 1000
+                     // Code 1: Distance is negative or exceeds 1200
                      if(times.ecode == 1){
                         notes_field.text("Entered distance is not valid per ACP rules");
 

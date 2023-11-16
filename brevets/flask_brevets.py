@@ -96,6 +96,9 @@ def _submit_times():
     # Need to make this a little friendlier for Python to work with
     vals = list(dict(request.form).values())
 
+    for i in range(len(vals)):
+        app.logger.debug(str(i) + " " + str(vals[i]))
+
     # THE DATA NEEDS TO BE HANDLED VERY RAPIDLY, AND SHOULD NOT BE STORED IN AN INTERMEDIARY DATA
     # STRUCTURE. I FOUND THIS OUT THE HARD WAY. PYTHON DICTIONARIES ARE NOT GOOD AT BEING PERSISTENT!
 
@@ -110,6 +113,11 @@ def _submit_times():
             "open":         vals[i * 5 + 3],
             "close":        vals[i * 5 + 4]
         })
+
+    db.brevets_collection.insert_one({
+        "brev_length": vals[100],
+        "start_date":  vals[101]
+    })
 
     '''
     for entry in list(db.brevets_collection.find()):
